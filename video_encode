@@ -1,0 +1,12 @@
+#!/bin/bash
+# crf 23 is the default. 0 is lossless
+video=$1
+# echo "Does this work ? " "${video%.*}"_encoded."${video##*.}"
+ffmpeg \
+  -i $video \
+  -c:v libx264 \
+  -preset medium \
+  -crf 24 \
+  -c:a copy \
+  "${video%.*}"_encoded."${video##*.}" \
+  -report

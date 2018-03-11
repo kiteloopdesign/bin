@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/kitesutra/Pictures/wallpapers/kite/hawaii_greta_1.jpg'
+# gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/kitesutra/Pictures/wallpapers/kite/aitutaki_greta_2.jpg'
+# gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/kitesutra/Pictures/wallpapers/kite/aitutaki_greta_3.jpg'
+# gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/kitesutra/Pictures/wallpapers/kite/aitutaki_greta_4.jpg'
+
+# Set your folder with the pics
+picsfolder="/home/kitesutra/Pictures/wallpapers/kite/"
+
+# Go to your folder with the pics
+cd $picsfolder
+
+# Create an array of the files
+files=(./*jpg)
+
+# Get the size of the array
+N=${#files[@]}
+
+# Select a random number between this range
+((N=RANDOM%N))
+
+# Get the name of this file
+# a bit overly complicated. basically it takes the Nth string from files ${files[$N]}, and then removes the first two letters which is the "./" at the beginning 
+randomfile=`echo ${files[$N]} | cut --characters="1 2" --complement`
+
+# start of gconftool command and set the desktop
+# gconftool-2 -t str --set /desktop/gnome/background/picture_filename "$picsfolder$randomfile"
+gsettings set org.cinnamon.desktop.background picture-uri \'file:///"$picsfolder$randomfile"\'
+#echo \'file:///$picsfolder$randomfile\'

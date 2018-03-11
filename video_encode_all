@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for video in *.mp4; do 
+  video_encode $video
+done

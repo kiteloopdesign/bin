@@ -1,0 +1,13 @@
+#!/bin/bash
+# Resizes images and converts them to animated gifs
+ffmpeg -i $1 \
+  -r 10  \
+  -f image2pipe \
+  -vf scale=640:-1 \
+  -vcodec ppm - | \
+  convert \
+  -delay 10 \
+  -loop 0 - output.gif
+
+# mogrify -resize 640x480 $*
+# convert -delay 20 -loop 0 *.[Jj][Pp][Gg] myimage.gif

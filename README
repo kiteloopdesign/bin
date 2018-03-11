@@ -1,0 +1,6 @@
+El owner y permissions de brightness_control se han cambiado ya que este script tiene permisos especiales de ejecucion en sudoers
+
+https://vilhelmp.blogspot.com/2016/06/screen-brightness-fn-keys-in-i3wm.html
+
+
+@6/1/18 : El ptop no puedo hacerlo fucionar

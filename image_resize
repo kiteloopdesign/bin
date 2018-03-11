@@ -1,0 +1,3 @@
+#!/bin/bash
+img=$1
+convert ${img} -resize 1280x720\> "${img%.*}"_encoded."${img##*.}"
