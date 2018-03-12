@@ -16,17 +16,23 @@ rsync \
   $1:/run/media/hdd_backup/ \
   > $tmpfile
 
-# THE -q is IMPORTANT !!!
-if grep -q deleting $tmpfile
-then
-  echo "There are deleted files!"
-  echo "Check deleted files and run again without the dry-run option!"
-  rm -f "$tmpfile"
-  exit
-else
-  # TODO : Hay un bug en el que en el log NO aparece el "deleting"!!
-  rm -f "$tmpfile"
+# Hay un bug en el que en el log NO aparece el "deleting"!!
+# por eso que hay que grepear en la std out y no el el logfile
 
+del_files=$(grep deleting "${tmpfile}")
+retcode=$?
+rm -f "$tmpfile"
+
+if [ $retcode -eq 0 ]
+then
+  printf '%s\n\n' "${del_files}"
+  read -p "There are deleted files! Do you want to continue? " -n 1 -r
+  echo    # (optional) move to a new line
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function
+  fi
+
+  # No files to be deleted or its ok to delete them
   rsync \
     -avv \
     --stats \
