@@ -1,6 +1,6 @@
 #!/bin/bash
 
-logfile="/home/${USER}/rsync_backup_$(date +%Y%m%d).log"
+logfile="/home/${USER}/rsync_backup_$(date +%d%m%Y%H%M).log"
 tmpfile=$(mktemp /tmp/rysnc-script.XXXXXX)
 
 rsync \
@@ -31,21 +31,20 @@ then
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
       [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function
   fi
-
-  # No files to be deleted or its ok to delete them
-  rsync \
-    -avv \
-    --stats \
-    --delete \
-    --itemize-changes \
-    --dry-run \
-    --log-file="${logfile}" \
-    --max-delete=20 \
-    --compress \
-    -e \
-    ssh \
-    /backup/ \
-    $1:/run/media/hdd_backup/
-
 fi
+
+# No files to be deleted or its ok to delete them
+rsync \
+  -avv \
+  --stats \
+  --delete \
+  --itemize-changes \
+  --log-file="${logfile}" \
+  --compress \
+  -e \
+  ssh \
+  /backup/ \
+  $1:/run/media/hdd_backup/
+
 exit
+--max-delete=20 \
