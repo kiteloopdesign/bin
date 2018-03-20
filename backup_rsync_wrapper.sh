@@ -1,7 +1,11 @@
 #!/bin/bash
 
 logfile="/home/${USER}/rsync_backup_$(date +%d%m%Y%H%M).log"
-tmpfile=$(mktemp /tmp/rysnc-script.XXXXXX)
+tmpfile=$(mktemp /tmp/rsync-script.XXXXXX)
+
+printf 'Script called with options "%s" and "%s" \n' "${1}" "${2}"
+read
+# printf 'Script called with options "%s" and "%s" \n' "$1" "$2"
 
 rsync \
   -avv \
@@ -12,8 +16,8 @@ rsync \
   --compress \
   -e \
   ssh \
-  /backup/ \
-  $1:/run/media/hdd_backup/ \
+  "${1}" \
+  "${2}" \
   > $tmpfile
 
 # Hay un bug en el que en el log NO aparece el "deleting"!!
@@ -21,7 +25,6 @@ rsync \
 
 del_files=$(grep deleting "${tmpfile}")
 retcode=$?
-rm -f "$tmpfile"
 
 if [ $retcode -eq 0 ]
 then
@@ -34,6 +37,9 @@ then
 fi
 
 # No files to be deleted or its ok to delete them
+
+rm -f "$tmpfile"
+
 rsync \
   -avv \
   --stats \
@@ -43,8 +49,8 @@ rsync \
   --compress \
   -e \
   ssh \
-  /backup/ \
-  $1:/run/media/hdd_backup/
+  "${1}" \
+  "${2}"
 
 exit
 --max-delete=20 \
