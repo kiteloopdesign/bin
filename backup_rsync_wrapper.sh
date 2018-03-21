@@ -1,15 +1,32 @@
 #!/bin/bash
+################################################################################
+#
+#
+#
+#
+#
+#
+# NOTES
+#  * --hard-links option makes script take too long (also doesn't seem to be
+#    working properly, can't see the hardlinks at dest) This means that 
+#
+#
+#
+# TODO: check for correct number of arguments 
+#
+################################################################################
 
 logfile="/home/${USER}/rsync_backup_$(date +%d%m%Y%H%M).log"
 tmpfile=$(mktemp /tmp/rsync-script.XXXXXX)
 
-printf 'Script called with options "%s" and "%s" \n' "${1}" "${2}"
-read
-# printf 'Script called with options "%s" and "%s" \n' "$1" "$2"
+# printf 'Script called with options "%s" and "%s" \n' "${1}" "${2}"
+# read
 
 rsync \
-  -avv \
+  -av \
   --stats \
+  --human-readable \
+  --hard-links \
   --delete \
   --itemize-changes \
   --dry-run \
@@ -41,11 +58,14 @@ fi
 rm -f "$tmpfile"
 
 rsync \
-  -avv \
+  -av \
   --stats \
+  --human-readable \
+  --hard-links \
   --delete \
   --itemize-changes \
   --log-file="${logfile}" \
+  --progress \
   --compress \
   -e \
   ssh \
