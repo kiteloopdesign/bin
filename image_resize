@@ -1,3 +1,4 @@
 #!/bin/bash
+# Resizes image to a new copy, original is kept untouched
 img=$1
-convert ${img} -resize 1280x720\> "${img%.*}"_encoded."${img##*.}"
+convert ${img} -resize 1280x720\> "${img%.*}"_resized."${img##*.}"

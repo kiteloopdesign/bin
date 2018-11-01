@@ -1,0 +1,4 @@
+#!/bin/bash
+# Crops image to a given size
+# WARNING! Original is overwritten!
+mogrify -crop 3000x2500+500+1000 $*

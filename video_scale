@@ -1,10 +1,10 @@
 #!/bin/bash
 video=$1
-res=$2 # 1280, 940
+res=$2 # 720, 480
 # echo "Does this work ? " "${video%.*}"_encoded."${video##*.}"
 ffmpeg \
   -i $video \
-  -vf scale=$2:-2 \
+  -vf scale=-1:$2 \
   -c:v libx264 \
   -c:a copy \
   "${video%.*}"_scaled."${video##*.}" \

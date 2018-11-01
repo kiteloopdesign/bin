@@ -6,9 +6,7 @@
 ################################################################################
 
 # TODO: check for arguments, make sure theres one 
-
-echo "rsnapshot doing a $1 backup" 
-rsnapshot $1
+rsnapshot $1 > /home/kitesutra/rsnapshot_$(date +%d%m%Y)_$1.log
 
 # Do a rsnapshot diff ... TODO
 # rsnapshot-diff -Hvi 

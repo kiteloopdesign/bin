@@ -1,0 +1,7 @@
+rsync \
+--update \
+--progress \
+-e 'ssh -p 2222' \
+-azv 192.168.1.73:/sdcard/WhatsApp/Media/WhatsApp\ Images\IMG-20180412-WA0005.jpg \
+.
+

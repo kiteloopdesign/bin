@@ -1,0 +1,18 @@
+#!/bin/bash
+# Si no especifico audio, el video acaba al haberse hecho corto, pero el audio sigue hasta el final. 
+# Para arreglarlo hay que acortar audio tb. problema que no me deja hacerlo correr mas rapido de 2x, asi pues la unica opcion es dejarlo fuera con -an
+# 0.5 : 2x video, 0.25 : 4x video ...
+video=$1
+ffmpeg -i $video \
+-filter:v "setpts=0.125*PTS" \
+-an \
+"${video%.*}"_speed_up."${video##*.}" \
+-report
+
+# el audio no se puede hacer mas de 2x !
+# ffmpeg -i $video \
+# -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]" \
+# -map "[v]" \
+# -map "[a]" \
+# "${video%.*}"_speed_up."${video##*.}" \
+# -report

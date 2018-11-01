@@ -1,20 +1,28 @@
 #!/bin/bash
 
-function setclip {
-  xclip -selection c
-}
+#!/bin/bash
+tmpfile=$(mktemp)
 
-function getclip {
-  xclip -selection clipboard -o
-}
+urxvt -name floating -e gvim -v +startinsert "$tmpfile"
+head -c -1 $tmpfile | xdotool type --clearmodifiers --delay 0 --file -
 
-filename=$(mktemp)
-# gnome-terminal -e gvim "${filename}"
-gnome-terminal -x sh -c 'vim ${filename}'
-urxvt -e gvim "${filename}" # replace with your favorite terminal
+rm $tmpfile
 
-cat ${filename} | setclip
-rm ${filename}
+# function setclip {
+#   xclip -selection c
+# }
 
-xdotool key ctrl+v
+# function getclip {
+#   xclip -selection clipboard -o
+# }
+
+# filename=$(mktemp)
+# # gnome-terminal -e gvim "${filename}"
+# gnome-terminal -x sh -c 'vim ${filename}'
+# urxvt -e gvim -v "${filename}" # replace with your favorite terminal
+
+# cat ${filename} | setclip
+# rm ${filename}
+
+# xdotool key ctrl+v
 
