@@ -2,10 +2,12 @@
 video=$1
 res=$2 # 720, 480
 # echo "Does this work ? " "${video%.*}"_encoded."${video##*.}"
+# TODO : probar con -2 si dice algo de odd
+
 ffmpeg \
   -i $video \
   -vf scale=-1:$2 \
   -c:v libx264 \
   -c:a copy \
-  "${video%.*}"_scaled."${video##*.}" \
-  -report
+  "${video%.*}"_scaled."${video##*.}"
+
