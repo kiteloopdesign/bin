@@ -4,7 +4,7 @@ promptuser() {
   printf "\e[1;32m %s \e[0m " "$*"
   old_stty_cfg=$(stty -g)
   stty raw -echo ; answer=$(head -c 1) ; stty $old_stty_cfg # Careful playing with stty
-  if [ "$answer" != "${answer#[Yy]}" ];then
+  if [ "$answer" != "${answer#[YySs]}" ];then
     echo Yes
   else
     echo "" && exit
@@ -37,33 +37,41 @@ else
 fi
 
 meses=("enero" "febrero" "marzo" "abril" "mayo" "junio" "julio" "agosto" "septiembre" "octubre" "noviembre" "diciembre")
-k=0
+k=1
 for mes in "${meses[@]}"; do
   m=$(printf "%02d" "$k")
-  pics=( $(find ./ -maxdepth 1 -name "IMG-${year}${m}*.jpg") )
+  pattern="\./IMG[_|-]${year}${m}.*\.jpg"
+  echo "Buscando por pics con esta pattern: $pattern"
+  pics=( $(find ./ -maxdepth 1 -regex "$pattern" ) )
   if [ ${#pics[@]} -gt 0 ]; then 
-    printf 'Pics son: %s\n' "${pics[@]}"
-    promptuser "Continuar?"
+    echo "Pics are:" && printf '%s\n' "${pics[@]}"
+    promptuser "Continuar [Y/y/s/S]?"
     mkdir "$mes"
-    mv IMG-${year}${m}*.jpg $mes
+    for f in "${pics[@]}"; do
+      mv -- "$f" "$mes"
+    done
   else 
     read -rsn1 -p"No hay fotos para el mes de $mes. Continuando"; echo
   fi
   ((k++))
 done
 
-k=0
+
+k=1
 for mes in "${meses[@]}"; do
   m=$(printf "%02d" "$k")
-  pics=( $(find ./ -maxdepth 1 -name "VID-${year}${m}*.mp4") )
+  pattern="\./VID[_|-]${year}${m}.*\.mp4"
+  echo "Buscando por pics con esta pattern: $pattern"
+  pics=( $(find ./ -maxdepth 1 -regex "$pattern" ) )
   if [ ${#pics[@]} -gt 0 ]; then 
-    printf 'Pics son: %s\n' "${pics[@]}"
-    promptuser "Continuar?"
+    echo "Pics are:" && printf '%s\n' "${pics[@]}"
+    promptuser "Continuar [Y/y/s/S]?"
     mkdir "$mes"
-    mv VID-${year}${m}*.mp4 $mes
+    for f in "${pics[@]}"; do
+      mv -- "$f" "$mes"
+    done
   else 
     read -rsn1 -p"No hay fotos para el mes de $mes. Continuando"; echo
   fi
   ((k++))
 done
-
